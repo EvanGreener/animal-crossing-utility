@@ -1,20 +1,15 @@
 import React, { Component } from 'react'
-import NavBar from '../components/NavBar'
+import Sidebar from '../components/Sidebar'
+import ToggleSwitch from '../components/ToggleSwitch'
 
 class Home extends Component {
     state = {}
     render() {
         return (
-            <div
-                style={{
-                    height: '100%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                }}
-            >
-                <NavBar />
-                <div className="content">Hey</div>
-            </div>
+            <React.Fragment>
+                <ToggleSwitch />
+                <Sidebar>Heyyyyyyyy</Sidebar>
+            </React.Fragment>
         )
     }
 }

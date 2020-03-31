@@ -10,11 +10,16 @@ body {
     height: 100%;
 }
 
+.toggle_header {
+    padding: 10px 10px 10px 40px;
+    background-color: #0f111a;
+}
+
 .content {
     padding: 10px 20px 0px 20px;
-    background-image: url('../assets/bg3.gif');
-    background-size: 100% 100%;
-    background-attachment: fixed;
+    background-image: url('../assets/bg3.gif') !important;
+    background-size: 100% 100% !important;
+    background-attachment: fixed !important;
     flex-grow: 1;
     text-align: center;
 }
