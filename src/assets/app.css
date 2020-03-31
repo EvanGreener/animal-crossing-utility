@@ -1,0 +1,20 @@
+html,
+body {
+    background-color: aqua;
+    font-size: large;
+    height: 100%;
+    width: 100%;
+}
+
+#root {
+    height: 100%;
+}
+
+.content {
+    padding: 10px 20px 0px 20px;
+    background-image: url('../assets/bg3.gif');
+    background-size: 100% 100%;
+    background-attachment: fixed;
+    flex-grow: 1;
+    text-align: center;
+}
