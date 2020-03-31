@@ -1,6 +1,6 @@
 html,
 body {
-    background-color: aqua;
+    background-color: #0d1121;
     font-size: large;
     height: 100%;
     width: 100%;
@@ -12,7 +12,29 @@ body {
 
 .toggle_header {
     padding: 10px 10px 10px 40px;
-    background-color: #0f111a;
+    background-color: #0d1121;
+}
+
+.pushable .sidebar {
+    background-color: #0d1121 !important;
+}
+
+.item {
+    color: aqua !important;
+}
+
+.item.search {
+    padding: 2em 1.5em 1.5em 1.5em !important;
+    font-size: 0.6em;
+}
+
+div .ui.icon.input {
+    width: 15em !important;
+    height: 2.5em !important;
+}
+
+.item:hover {
+    color: rgb(0, 164, 164) !important;
 }
 
 .content {
@@ -22,4 +44,8 @@ body {
     background-attachment: fixed !important;
     flex-grow: 1;
     text-align: center;
+}
+
+#current-time {
+    font-size: 2.5em;
 }

@@ -8,17 +8,15 @@ class ToggleSwitch extends Component {
     }
     render() {
         return (
-            <React.Fragment>
-                <div class="toggle_header">
-                    <Button
-                        content="Menu"
-                        inverted
-                        color="teal"
-                        icon="folder open outline"
-                        labelPosition="left"
-                    />
-                </div>
-            </React.Fragment>
+            <div className="toggle_header">
+                <Button
+                    inverted
+                    content="Menu"
+                    color="teal"
+                    icon="sidebar"
+                    onClick={this.props.onClick}
+                />
+            </div>
         )
     }
 }
