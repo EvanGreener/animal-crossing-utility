@@ -47,5 +47,37 @@ div .ui.icon.input {
 }
 
 #current-time {
-    font-size: 2.5em;
+    font-size: 2em;
+}
+
+button.MuiFab-primary {
+    position: fixed;
+    top: 85%;
+    left: 94%;
+    color: aqua !important;
+    background-color: #0d1121 !important;
+}
+
+button.MuiFab-primary:active {
+    outline: none;
+}
+
+h2.ui.header {
+    display: inline;
+}
+
+.MuiBackdrop-root {
+    z-index: 100 !important;
+    color: #0d1121 !important;
+}
+
+#tablecontainer {
+    width: 55%;
+    margin: 0 auto;
+    margin-top: 3em;
+}
+
+.MuiTableCell-head {
+    background-color: #0d1121;
+    color: aqua !important;
 }
