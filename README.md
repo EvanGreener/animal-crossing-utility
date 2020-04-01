@@ -1,3 +1,12 @@
+### Animal Crossing Utility - front end
+
+This is the backend for a web application for people who want maximize profits in [Animal crossing: New Horizons](https://www.google.com/search?gs_ssp=eJzj4tVP1zc0zDCOtzCySDcyYPSSSczLzE3MUUguyi8uzsxLV8hLLVfIyC_KrMrPKwYANkQPCw&q=animal+crossing+new+horizons&rlz=1C5CHFA_enCA856CA856&oq=ani&aqs=chrome.1.69i59j46j69i59l2j69i57j46j69i60l2.3596j0j7&sourceid=chrome&ie=UTF-8) It displays a list of all the currently obtainable fish and insects in real time, and by default is sorted by sale price in descending order. In addition to the price being displayed, their species, how to get (location) and the time left to obtain it will also be shown. The user will also be click on any record in the list to view more information about any given creature.
+
+See the [back end](https://github.com/EvanGreener/ac-back-end) repository
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
