@@ -1,2 +1,2 @@
-# ac-back-end
-Backend for animal crossing utility
+# Animal crossing utility backend
+  - API
