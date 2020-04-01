@@ -27,7 +27,7 @@ var Critter = function(crit) {
 Critter.getObtainable = function(result) {
     num = new Date().getMonth()
     sql.query(
-        `SELECT * FROM critters_north WHERE month${num} IS TRUE`,
+        `SELECT * FROM critters_north WHERE month${num} IS TRUE ORDER BY price DESC`,
         function(err, res) {
             if (err) {
                 console.log('error: ', err)
@@ -44,7 +44,7 @@ Critter.getObtainable = function(result) {
 Critter.getObtainableByType = function(type, result) {
     num = new Date().getMonth()
     sql.query(
-        `SELECT * FROM critters_north WHERE type = ? AND month${num} IS TRUE`,
+        `SELECT * FROM critters_north WHERE type = ? AND month${num} IS TRUE ORDER BY price DESC`,
         type,
         function(err, res) {
             if (err) {
