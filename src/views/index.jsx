@@ -39,7 +39,7 @@ class Home extends Component {
                     </Header>
                     <br />
                     <code key="time" id="current-time">
-                        {time.toLocaleTimeString()}
+                        {`${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}`}
                     </code>
 
                     <div id="tablecontainer">

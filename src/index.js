@@ -9,11 +9,11 @@ import Home from './views/index'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'semantic-ui/dist/semantic.min.css'
 import './assets/app.css'
+import 'react-virtualized/styles.css'
 
 ReactDOM.render(
     <BrowserRouter>
         <Route path="/" component={Home} exact />
-        {/* <Route path="/browse" component={} /> */}
     </BrowserRouter>,
     document.getElementById('root')
 )

@@ -1,64 +1,171 @@
-import React, { Component } from 'react'
-import {
-    TableContainer,
-    Paper,
-    Table,
-    TableCell,
-    TableRow,
-    TableHead,
-} from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import React, { PureComponent } from 'react'
+import { Paper, Backdrop, CircularProgress } from '@material-ui/core'
+import Axios from 'axios'
+import { Column, Table, AutoSizer } from 'react-virtualized'
 
-const useStyles = () =>
-    makeStyles({
-        table: {
-            minWidth: 400,
-        },
-        head: {
-            backgroundColor: '#0d1121',
-            color: 'aqua',
-        },
-    })
+function msToTime(duration) {
+    var milliseconds = parseInt((duration % 1000) / 100),
+        seconds = parseInt((duration / 1000) % 60),
+        minutes = parseInt((duration / (1000 * 60)) % 60),
+        hours = parseInt((duration / (1000 * 60 * 60)) % 24)
 
-class CritterList extends Component {
+    hours = hours < 10 ? '0' + hours : hours
+    minutes = minutes < 10 ? '0' + minutes : minutes
+    seconds = seconds < 10 ? '0' + seconds : seconds
+
+    return hours + ':' + minutes + ':' + seconds + '.' + milliseconds
+}
+
+class CritterList extends PureComponent {
     constructor(props) {
         super(props)
-        this.state = {}
+        this.state = {
+            fetchingData: true,
+            data: null,
+            currentlyObtainable: [],
+        }
     }
 
-    // createList = () => {
-    //     const { data } = this.props
-    //     const critters = []
+    updateData = () => {
+        const { data } = this.state
+        if (data !== null) {
+            this.setState({
+                currentlyObtainable: data.filter(critter => {
+                    const { start_time, end_time } = critter
+                    const time = new Date()
 
-    //     let rank = 1
-    //     for (const value of data) {
-    //         if (rank === 1) {
-    //         } else if (rank === 2) {
-    //         } else if (rank === 3) {
-    //         } else {
-    //         }
-    //         rank++
-    //     }
-    // }
+                    const year = time.getFullYear()
+                    const month = time.getMonth()
+                    const dayOfMonth = time.getDate()
+
+                    const startSplit = start_time.split(':')
+                    const endSplit = end_time.split(':')
+
+                    //Month is 0-indexed
+                    const startTime = new Date(
+                        year,
+                        month,
+                        dayOfMonth,
+                        startSplit[0],
+                        startSplit[1],
+                        startSplit[2]
+                    )
+                    let endTime = new Date(
+                        year,
+                        month,
+                        dayOfMonth,
+                        endSplit[0],
+                        endSplit[1],
+                        endSplit[2]
+                    )
+
+                    if (startTime.getHours() > endTime.getHours()) {
+                        endTime.setDate(endTime.getDate() + 1)
+                    }
+
+                    return time >= startTime && time < endTime
+                }),
+            })
+        }
+    }
+
+    componentDidMount() {
+        /**
+         * Retriving data from API on port 9000
+         */
+
+        Axios.get(`http://192.168.0.162:9000`).then(response => {
+            this.setState({ data: response.data, fetchingData: false })
+        })
+
+        /**
+         * Updates data every five seconds
+         */
+        this.updateData()
+        setInterval(this.updateData, 1000)
+    }
 
     render() {
-        const classes = useStyles()
+        const { fetchingData, data, currentlyObtainable } = this.state
+        console.log(currentlyObtainable)
+
+        const renderedObject =
+            fetchingData || !data ? (
+                <div />
+            ) : (
+                <Paper
+                    elevation={12}
+                    style={{
+                        height: 400,
+                        width: '100%',
+                        backgroundColor: '#0d1121',
+                        opacity: '90%',
+                    }}
+                >
+                    <AutoSizer disableHeight>
+                        {({ width }) => (
+                            <Table
+                                headerHeight={60}
+                                height={400}
+                                width={width}
+                                headerStyle={{
+                                    color: 'aqua',
+                                }}
+                                rowCount={currentlyObtainable.length}
+                                rowGetter={({ index }) =>
+                                    currentlyObtainable[index]
+                                }
+                                rowHeight={55}
+                                rowStyle={{ color: 'white' }}
+                            >
+                                <Column
+                                    dataKey="img_src"
+                                    label="Image"
+                                    width={width / 6}
+                                    cellRenderer={({ cellData }) => (
+                                        <img
+                                            src={cellData}
+                                            alt=""
+                                            height={64}
+                                            width={64}
+                                        />
+                                    )}
+                                />
+                                <Column
+                                    dataKey="name"
+                                    label="Name"
+                                    width={width / 6}
+                                />
+                                <Column
+                                    dataKey="price"
+                                    label="Price"
+                                    width={width / 6}
+                                />
+                                <Column
+                                    dataKey="location"
+                                    label="Location"
+                                    width={width / 4}
+                                />
+                                <Column
+                                    dataKey="end_time"
+                                    label="Obtainable till"
+                                    width={width / 4}
+                                />
+                            </Table>
+                        )}
+                    </AutoSizer>
+                </Paper>
+            )
+
         return (
-            <TableContainer elevation={5} component={Paper}>
-                <Table className={classes}>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell align="center">Image</TableCell>
-                            <TableCell align="center">Price</TableCell>
-                            <TableCell align="center">Location</TableCell>
-                            <TableCell align="center">Name</TableCell>
-                            <TableCell align="center">
-                                Time left to obtain
-                            </TableCell>
-                        </TableRow>
-                    </TableHead>
-                </Table>
-            </TableContainer>
+            <div>
+                Currently <strong> {currentlyObtainable.length} </strong>{' '}
+                creatures obtainable
+                {renderedObject}
+                <Backdrop open={fetchingData || !data}>
+                    <CircularProgress color="inherit" />
+                </Backdrop>
+            </div>
         )
     }
 }

@@ -1,31 +1,13 @@
 import React, { Component } from 'react'
 import { Input, Icon, Menu, Sidebar, Segment } from 'semantic-ui-react'
-import Axios from 'axios'
-import { Backdrop, CircularProgress } from '@material-ui/core'
 
 class NavBar extends Component {
     constructor(props) {
         super(props)
-        this.state = {
-            time: new Date(),
-            fetchingData: true,
-            data: null,
-        }
-    }
-
-    componentDidMount() {
-        /**
-         * Retriving data from API on port 9000
-         */
-        Axios.get(`http://192.168.0.162:9000`).then(response => {
-            this.setState({ data: response.data, fetchingData: false })
-        })
+        this.state = {}
     }
 
     render() {
-        const { fetchingData, data } = this.state
-        console.log(fetchingData || !data)
-
         return (
             <Sidebar.Pushable>
                 <Sidebar
@@ -51,13 +33,7 @@ class NavBar extends Component {
                 </Sidebar>
 
                 <Sidebar.Pusher className="content" dimmed={this.props.visible}>
-                    <Segment basic>
-                        {this.props.children}
-
-                        <Backdrop open={fetchingData || !data}>
-                            <CircularProgress color="inherit" />
-                        </Backdrop>
-                    </Segment>
+                    <Segment basic>{this.props.children}</Segment>
                 </Sidebar.Pusher>
             </Sidebar.Pushable>
         )
