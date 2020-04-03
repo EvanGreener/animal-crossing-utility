@@ -56,8 +56,12 @@ with open(os.path.join(current_dir, "fish-north.csv")) as csv_file:
                 else:
                     end = f'{int(split_str[3]) + 12}:00:00'
 
+            price = row["Price"]
+            if price == '?':
+                price = 'null'
+
             output.write(
-                f'\t(\'{row["Name"]}\', \'fish\', \'{fish_img_srcs[counter - 1]}\', {row["Price"]}, \'{row["Location"]}\', \'{start}\', \'{end}\', {convertToBool(row["Jan"])}, {convertToBool(row["Feb"])}, {convertToBool(row["Mar"])}, {convertToBool(row["Apr"])}, {convertToBool(row["May"])}, {convertToBool(row["Jun"])}, {convertToBool(row["Jul"])}, {convertToBool(row["Aug"])}, {convertToBool(row["Sep"])}, {convertToBool(row["Oct"])}, {convertToBool(row["Nov"])}, {convertToBool(row["Dec"])}),\n')
+                f'\t(\'{row["Name"]}\', \'fish\', \'{fish_img_srcs[counter]}\', {price }, \'{row["Location"]}\', \'{start}\', \'{end}\', {convertToBool(row["Jan"])}, {convertToBool(row["Feb"])}, {convertToBool(row["Mar"])}, {convertToBool(row["Apr"])}, {convertToBool(row["May"])}, {convertToBool(row["Jun"])}, {convertToBool(row["Jul"])}, {convertToBool(row["Aug"])}, {convertToBool(row["Sep"])}, {convertToBool(row["Oct"])}, {convertToBool(row["Nov"])}, {convertToBool(row["Dec"])}),\n')
             counter += 1
         print(f'### Processed {counter} fish records')
 
@@ -87,16 +91,20 @@ with open(os.path.join(current_dir, "bugs-north.csv")) as csv_file:
                 else:
                     end = f'{int(split_str[3]) + 12}:00:00'
 
-            img_src = ''
-            if 'unknown' in row["Image"].lower():
-                img_src = 'Unknown'
-                counter -= 1
-            else:
-                img_src = bug_img_srcs[counter]
+            # img_src = ''
+            # if 'unknown' in row["Image"].lower():
+            #     img_src = 'Unknown'
+            #     counter -= 1
+            # else:
+            #     img_src = bug_img_srcs[counter]
+
+            price = row["Price"]
+            if price == '?':
+                price = 'null'
 
             output.write(
-                f'\t(\'{row["Name"]}\', \'bug\', \'{img_src}\', {row["Price"]}, \'{row["Location"]}\', \'{start}\', \'{end}\', {convertToBool(row["Jan"])}, {convertToBool(row["Feb"])}, {convertToBool(row["Mar"])}, {convertToBool(row["Apr"])}, {convertToBool(row["May"])}, {convertToBool(row["Jun"])}, {convertToBool(row["Jul"])}, {convertToBool(row["Aug"])}, {convertToBool(row["Sep"])}, {convertToBool(row["Oct"])}, {convertToBool(row["Nov"])}, {convertToBool(row["Dec"])}),\n')
+                f'\t(\'{row["Name"]}\', \'bug\', \'{bug_img_srcs[counter]}\', {price}, \'{row["Location"]}\', \'{start}\', \'{end}\', {convertToBool(row["Jan"])}, {convertToBool(row["Feb"])}, {convertToBool(row["Mar"])}, {convertToBool(row["Apr"])}, {convertToBool(row["May"])}, {convertToBool(row["Jun"])}, {convertToBool(row["Jul"])}, {convertToBool(row["Aug"])}, {convertToBool(row["Sep"])}, {convertToBool(row["Oct"])}, {convertToBool(row["Nov"])}, {convertToBool(row["Dec"])}),\n')
             counter += 1
-        print(f'### Processed {counter + 16} bug records')
+        print(f'### Processed {counter} bug records')
 
 print('See output.txt')
