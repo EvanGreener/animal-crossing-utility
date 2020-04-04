@@ -21,6 +21,14 @@ class Home extends Component {
 
     render() {
         const { time } = this.state
+        let hours = time.getHours()
+        let mins = time.getMinutes()
+        let secs = time.getSeconds()
+
+        hours = hours < 10 ? '0' + hours : hours
+        mins = mins < 10 ? '0' + mins : mins
+        secs = secs < 10 ? '0' + secs : secs
+
         return (
             <React.Fragment>
                 <ToggleSwitch onClick={this.handleSidebarToggle} />
@@ -39,7 +47,7 @@ class Home extends Component {
                     </Header>
                     <br />
                     <code key="time" id="current-time">
-                        {`${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}`}
+                        {`${hours}:${mins}:${secs}`}
                     </code>
 
                     <div id="tablecontainer">

@@ -4,8 +4,7 @@ import Axios from 'axios'
 import { Column, Table, AutoSizer } from 'react-virtualized'
 
 function msToTime(duration) {
-    var milliseconds = parseInt((duration % 1000) / 100),
-        seconds = parseInt((duration / 1000) % 60),
+    var seconds = parseInt((duration / 1000) % 60),
         minutes = parseInt((duration / (1000 * 60)) % 60),
         hours = parseInt((duration / (1000 * 60 * 60)) % 24)
 
@@ -13,7 +12,116 @@ function msToTime(duration) {
     minutes = minutes < 10 ? '0' + minutes : minutes
     seconds = seconds < 10 ? '0' + seconds : seconds
 
-    return hours + ':' + minutes + ':' + seconds + '.' + milliseconds
+    return hours + ':' + minutes + ':' + seconds
+}
+
+function convertTimeToDate(start_time, end_time) {
+    const time = new Date()
+
+    const year = time.getFullYear()
+    const month = time.getMonth()
+    const dayOfMonth = time.getDate()
+
+    const startSplit = start_time.split(':')
+    const endSplit = end_time.split(':')
+
+    //Month is 0-indexed
+    const startTime = new Date(
+        year,
+        month,
+        dayOfMonth,
+        startSplit[0],
+        startSplit[1],
+        startSplit[2]
+    )
+    let endTime = new Date(
+        year,
+        month,
+        dayOfMonth,
+        endSplit[0],
+        endSplit[1],
+        endSplit[2]
+    )
+
+    if (startTime.getHours() > endTime.getHours()) {
+        endTime.setDate(endTime.getDate() + 1)
+    }
+
+    return { time, startTime, endTime }
+}
+
+function rowRenderer({
+    className,
+    columns,
+    index,
+    key,
+    onRowClick,
+    onRowDoubleClick,
+    onRowMouseOut,
+    onRowMouseOver,
+    onRowRightClick,
+    rowData,
+    style,
+}) {
+    const a11yProps = { 'aria-rowindex': index + 1 }
+
+    if (
+        onRowClick ||
+        onRowDoubleClick ||
+        onRowMouseOut ||
+        onRowMouseOver ||
+        onRowRightClick
+    ) {
+        a11yProps['aria-label'] = 'row'
+        a11yProps.tabIndex = 0
+
+        if (onRowClick) {
+            a11yProps.onClick = (event) => onRowClick({ event, index, rowData })
+        }
+        if (onRowDoubleClick) {
+            a11yProps.onDoubleClick = (event) =>
+                onRowDoubleClick({ event, index, rowData })
+        }
+        if (onRowMouseOut) {
+            a11yProps.onMouseOut = (event) =>
+                onRowMouseOut({ event, index, rowData })
+        }
+        if (onRowMouseOver) {
+            a11yProps.onMouseOver = (event) =>
+                onRowMouseOver({ event, index, rowData })
+        }
+        if (onRowRightClick) {
+            a11yProps.onContextMenu = (event) =>
+                onRowRightClick({ event, index, rowData })
+        }
+    }
+
+    switch (index) {
+        case 0:
+            style = { ...style, backgroundColor: '#ffe554', color: 'black' }
+            break
+        case 1:
+            style = { ...style, backgroundColor: '#adadad', color: 'black' }
+            break
+        case 2:
+            style = { ...style, backgroundColor: '#bf6730', color: 'black' }
+            break
+
+        default:
+            break
+    }
+
+    return (
+        <div
+            {...a11yProps}
+            className={className}
+            key={key}
+            role="row"
+            style={style}
+        >
+            {columns}
+        </div>
+    )
 }
 
 class CritterList extends PureComponent {
@@ -29,42 +137,19 @@ class CritterList extends PureComponent {
     updateData = () => {
         const { data } = this.state
         if (data !== null) {
+            const newCritters = data.filter((critter) => {
+                const { start_time, end_time } = critter
+
+                const { startTime, endTime, time } = convertTimeToDate(
+                    start_time,
+                    end_time
+                )
+
+                return time >= startTime && time < endTime
+            })
+
             this.setState({
-                currentlyObtainable: data.filter(critter => {
-                    const { start_time, end_time } = critter
-                    const time = new Date()
-
-                    const year = time.getFullYear()
-                    const month = time.getMonth()
-                    const dayOfMonth = time.getDate()
-
-                    const startSplit = start_time.split(':')
-                    const endSplit = end_time.split(':')
-
-                    //Month is 0-indexed
-                    const startTime = new Date(
-                        year,
-                        month,
-                        dayOfMonth,
-                        startSplit[0],
-                        startSplit[1],
-                        startSplit[2]
-                    )
-                    let endTime = new Date(
-                        year,
-                        month,
-                        dayOfMonth,
-                        endSplit[0],
-                        endSplit[1],
-                        endSplit[2]
-                    )
-
-                    if (startTime.getHours() > endTime.getHours()) {
-                        endTime.setDate(endTime.getDate() + 1)
-                    }
-
-                    return time >= startTime && time < endTime
-                }),
+                currentlyObtainable: newCritters,
             })
         }
     }
@@ -74,12 +159,12 @@ class CritterList extends PureComponent {
          * Retriving data from API on port 9000
          */
 
-        Axios.get(`http://192.168.0.162:9000`).then(response => {
+        Axios.get(`http://192.168.0.162:9000`).then((response) => {
             this.setState({ data: response.data, fetchingData: false })
         })
 
         /**
-         * Updates data every five seconds
+         * Updates data every second
          */
         this.updateData()
         setInterval(this.updateData, 1000)
@@ -87,7 +172,6 @@ class CritterList extends PureComponent {
 
     render() {
         const { fetchingData, data, currentlyObtainable } = this.state
-        console.log(currentlyObtainable)
 
         const renderedObject =
             fetchingData || !data ? (
@@ -117,6 +201,7 @@ class CritterList extends PureComponent {
                                 }
                                 rowHeight={55}
                                 rowStyle={{ color: 'white' }}
+                                rowRenderer={rowRenderer}
                             >
                                 <Column
                                     dataKey="img_src"
@@ -148,8 +233,57 @@ class CritterList extends PureComponent {
                                 />
                                 <Column
                                     dataKey="end_time"
-                                    label="Obtainable till"
-                                    width={width / 4}
+                                    label="Time left:"
+                                    width={width / 6}
+                                    cellRenderer={({ rowIndex }) => {
+                                        const {
+                                            start_time,
+                                            end_time,
+                                        } = currentlyObtainable[rowIndex]
+
+                                        if (
+                                            start_time === '00:00:00' &&
+                                            end_time === '23:59:59'
+                                        ) {
+                                            return 'All Day'
+                                        } else {
+                                            // Time = the time now
+                                            const {
+                                                endTime,
+                                            } = convertTimeToDate(
+                                                start_time,
+                                                end_time
+                                            )
+
+                                            const time = new Date()
+
+                                            const diff =
+                                                endTime.getTime() -
+                                                time.getTime()
+
+                                            return msToTime(diff)
+                                        }
+                                    }}
+                                />
+                                <Column
+                                    dataKey="start_time"
+                                    label="Availible again at:"
+                                    width={width / 3.5}
+                                    cellRenderer={({ rowIndex, cellData }) => {
+                                        const {
+                                            start_time,
+                                            end_time,
+                                        } = currentlyObtainable[rowIndex]
+
+                                        if (
+                                            start_time === '00:00:00' &&
+                                            end_time === '23:59:59'
+                                        ) {
+                                            return '-'
+                                        } else {
+                                            return cellData
+                                        }
+                                    }}
                                 />
                             </Table>
                         )}
@@ -159,8 +293,8 @@ class CritterList extends PureComponent {
 
         return (
             <div>
-                Currently <strong> {currentlyObtainable.length} </strong>{' '}
-                creatures obtainable
+                Showing <strong> {currentlyObtainable.length} </strong>{' '}
+                obtainable creatures
                 {renderedObject}
                 <Backdrop open={fetchingData || !data}>
                     <CircularProgress color="inherit" />
