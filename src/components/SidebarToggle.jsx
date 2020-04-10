@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Button } from 'semantic-ui-react'
 
-class ToggleSwitch extends Component {
+class SidebarToggle extends Component {
     constructor(props) {
         super(props)
         this.state = {}
@@ -21,4 +21,4 @@ class ToggleSwitch extends Component {
     }
 }
 
-export default ToggleSwitch
+export default SidebarToggle

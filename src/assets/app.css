@@ -72,7 +72,21 @@ h2.ui.header {
 }
 
 #tablecontainer {
-    width: 70%;
+    width: 90%;
     margin: 0 auto;
-    margin-top: 2em;
+}
+
+.content-grid {
+    margin-top: 1em !important;
+}
+
+.filters {
+    text-align: left;
+    color: aqua;
+    background-color: #0d1121;
+    opacity: 90%;
+    font-size: 0.9em;
+    margin-top: 2.5em;
+    margin-bottom: 1em;
+    border-radius: 20px;
 }

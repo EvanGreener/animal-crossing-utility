@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Sidebar from '../components/Sidebar'
-import ToggleSwitch from '../components/ToggleSwitch'
-import { Header, Icon } from 'semantic-ui-react'
+import SidebarToggle from '../components/SidebarToggle'
+import { Header, Icon, Grid, Checkbox, Divider } from 'semantic-ui-react'
 import { MenuOpen } from '@material-ui/icons'
 import { Fab } from '@material-ui/core'
 import CritterList from '../components/CritterList'
@@ -10,6 +10,7 @@ class Home extends Component {
     state = {
         time: new Date(),
         sidebarVisible: false,
+        allDay: true,
     }
 
     componentDidMount() {
@@ -20,7 +21,7 @@ class Home extends Component {
     }
 
     render() {
-        const { time } = this.state
+        const { time, sidebarVisible, allDay } = this.state
         let hours = time.getHours()
         let mins = time.getMinutes()
         let secs = time.getSeconds()
@@ -31,11 +32,8 @@ class Home extends Component {
 
         return (
             <React.Fragment>
-                <ToggleSwitch onClick={this.handleSidebarToggle} />
-                <Sidebar
-                    visible={this.state.sidebarVisible}
-                    onHide={this.handleOnHide}
-                >
+                <SidebarToggle onClick={this.handleSidebarToggle} />
+                <Sidebar visible={sidebarVisible} onHide={this.handleOnHide}>
                     <Header as="h2">
                         <Icon name="leaf" color="green" />
                         <Header.Content>
@@ -50,9 +48,23 @@ class Home extends Component {
                         {`${hours}:${mins}:${secs}`}
                     </code>
 
-                    <div id="tablecontainer">
-                        <CritterList />
-                    </div>
+                    <Grid className="content-grid">
+                        <Grid.Column className="filters" width={2}>
+                            <p>Obtainable all day:</p>
+                            <Checkbox
+                                defaultChecked
+                                toggle
+                                onChange={this.handleAllDayToggle}
+                            />
+
+                            <Divider inverted />
+                        </Grid.Column>
+                        <Grid.Column width={14}>
+                            <div id="tablecontainer">
+                                <CritterList allDay={allDay} type="both" />
+                            </div>
+                        </Grid.Column>
+                    </Grid>
                 </Sidebar>
 
                 <Fab
@@ -73,6 +85,10 @@ class Home extends Component {
 
     handleOnHide = () => {
         this.setState({ sidebarVisible: false })
+    }
+
+    handleAllDayToggle = () => {
+        this.setState({ allDay: !this.state.allDay })
     }
 }
 

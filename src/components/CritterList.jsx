@@ -138,12 +138,19 @@ class CritterList extends PureComponent {
         const { data } = this.state
         if (data !== null) {
             const newCritters = data.filter((critter) => {
+                const { allDay } = this.props
                 const { start_time, end_time } = critter
+
+                if (start_time === '00:00:00' && end_time === '23:59:59') {
+                    return allDay
+                }
 
                 const { startTime, endTime, time } = convertTimeToDate(
                     start_time,
                     end_time
                 )
+
+                console.log(critter.type)
 
                 return time >= startTime && time < endTime
             })
