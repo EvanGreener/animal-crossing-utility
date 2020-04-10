@@ -150,8 +150,6 @@ class CritterList extends PureComponent {
                     end_time
                 )
 
-                console.log(critter.type)
-
                 return time >= startTime && time < endTime
             })
 
@@ -173,8 +171,7 @@ class CritterList extends PureComponent {
         /**
          * Updates data every second
          */
-        this.updateData()
-        setInterval(this.updateData, 1000)
+        setInterval(this.updateData, 500)
     }
 
     render() {

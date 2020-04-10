@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import Sidebar from '../components/Sidebar'
 import SidebarToggle from '../components/SidebarToggle'
-import { Header, Icon, Grid, Checkbox, Divider } from 'semantic-ui-react'
+import { Header, Icon, Grid, Checkbox } from 'semantic-ui-react'
+import { Backdrop, CircularProgress } from '@material-ui/core'
 import { MenuOpen } from '@material-ui/icons'
 import { Fab } from '@material-ui/core'
 import CritterList from '../components/CritterList'
@@ -11,6 +12,7 @@ class Home extends Component {
         time: new Date(),
         sidebarVisible: false,
         allDay: true,
+        loading: false,
     }
 
     componentDidMount() {
@@ -21,7 +23,7 @@ class Home extends Component {
     }
 
     render() {
-        const { time, sidebarVisible, allDay } = this.state
+        const { time, sidebarVisible, allDay, loading } = this.state
         let hours = time.getHours()
         let mins = time.getMinutes()
         let secs = time.getSeconds()
@@ -56,8 +58,6 @@ class Home extends Component {
                                 toggle
                                 onChange={this.handleAllDayToggle}
                             />
-
-                            <Divider inverted />
                         </Grid.Column>
                         <Grid.Column width={14}>
                             <div id="tablecontainer">
@@ -75,6 +75,10 @@ class Home extends Component {
                 >
                     <MenuOpen />
                 </Fab>
+
+                <Backdrop open={loading}>
+                    <CircularProgress color="inherit" />
+                </Backdrop>
             </React.Fragment>
         )
     }
@@ -88,7 +92,10 @@ class Home extends Component {
     }
 
     handleAllDayToggle = () => {
-        this.setState({ allDay: !this.state.allDay })
+        this.setState({ allDay: !this.state.allDay, loading: true })
+        setTimeout(() => {
+            this.setState({ loading: false })
+        }, 500)
     }
 }
 
