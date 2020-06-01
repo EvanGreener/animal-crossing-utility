@@ -124,6 +124,33 @@ function rowRenderer({
     )
 }
 
+function timeLeftCellRenderer(rowIndex, currentlyObtainable) {
+    const { start_time, end_time } = currentlyObtainable[rowIndex]
+
+    if (start_time === '00:00:00' && end_time === '23:59:59') {
+        return 'All Day'
+    } else {
+        // Time = the time now
+        const { endTime } = convertTimeToDate(start_time, end_time)
+
+        const time = new Date()
+
+        const diff = endTime.getTime() - time.getTime()
+
+        return msToTime(diff)
+    }
+}
+
+function startTimeCellRenderer(rowIndex, cellData, currentlyObtainable) {
+    const { start_time, end_time } = currentlyObtainable[rowIndex]
+
+    if (start_time === '00:00:00' && end_time === '23:59:59') {
+        return '-'
+    } else {
+        return cellData
+    }
+}
+
 class CritterList extends PureComponent {
     constructor(props) {
         super(props)
@@ -164,7 +191,7 @@ class CritterList extends PureComponent {
          * Retriving data from API on port 9000
          */
 
-        Axios.get(`http://192.168.0.162:9000`).then((response) => {
+        Axios.get(`http://localhost:9000`).then((response) => {
             this.setState({ data: response.data, fetchingData: false })
         })
 
@@ -240,33 +267,10 @@ class CritterList extends PureComponent {
                                     label="Time left:"
                                     width={width / 6}
                                     cellRenderer={({ rowIndex }) => {
-                                        const {
-                                            start_time,
-                                            end_time,
-                                        } = currentlyObtainable[rowIndex]
-
-                                        if (
-                                            start_time === '00:00:00' &&
-                                            end_time === '23:59:59'
-                                        ) {
-                                            return 'All Day'
-                                        } else {
-                                            // Time = the time now
-                                            const {
-                                                endTime,
-                                            } = convertTimeToDate(
-                                                start_time,
-                                                end_time
-                                            )
-
-                                            const time = new Date()
-
-                                            const diff =
-                                                endTime.getTime() -
-                                                time.getTime()
-
-                                            return msToTime(diff)
-                                        }
+                                        return timeLeftCellRenderer(
+                                            rowIndex,
+                                            currentlyObtainable
+                                        )
                                     }}
                                 />
                                 <Column
@@ -274,19 +278,11 @@ class CritterList extends PureComponent {
                                     label="Availible again at:"
                                     width={width / 3.5}
                                     cellRenderer={({ rowIndex, cellData }) => {
-                                        const {
-                                            start_time,
-                                            end_time,
-                                        } = currentlyObtainable[rowIndex]
-
-                                        if (
-                                            start_time === '00:00:00' &&
-                                            end_time === '23:59:59'
-                                        ) {
-                                            return '-'
-                                        } else {
-                                            return cellData
-                                        }
+                                        return startTimeCellRenderer(
+                                            rowIndex,
+                                            cellData,
+                                            currentlyObtainable
+                                        )
                                     }}
                                 />
                             </Table>

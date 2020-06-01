@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Input, Icon, Menu, Sidebar, Segment } from 'semantic-ui-react'
+import { Icon, Menu, Sidebar, Segment } from 'semantic-ui-react'
 
 class NavBar extends Component {
     constructor(props) {
@@ -17,7 +17,7 @@ class NavBar extends Component {
                     onHide={() => this.props.onHide()}
                     vertical
                     visible={this.props.visible}
-                    width="wide"
+                    width="thin"
                 >
                     <Menu.Item as="a">
                         <Icon inverted color="teal" name="home" />
@@ -27,8 +27,9 @@ class NavBar extends Component {
                         <Icon inverted color="teal" name="file code outline" />
                         API Docs
                     </Menu.Item>
-                    <Menu.Item className="search">
-                        <Input icon="search" placeholder="Search..." />
+                    <Menu.Item as="a">
+                        <Icon inverted color="teal" name="help circle" />
+                        Help
                     </Menu.Item>
                 </Sidebar>
 

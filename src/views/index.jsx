@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Sidebar from '../components/Sidebar'
 import SidebarToggle from '../components/SidebarToggle'
-import { Header, Icon, Grid, Checkbox } from 'semantic-ui-react'
+import { Header, Icon, Grid, Checkbox, Divider, Input } from 'semantic-ui-react'
 import { Backdrop, CircularProgress } from '@material-ui/core'
 import { MenuOpen } from '@material-ui/icons'
 import { Fab } from '@material-ui/core'
@@ -51,15 +51,24 @@ class Home extends Component {
                     </code>
 
                     <Grid className="content-grid">
-                        <Grid.Column className="filters" width={2}>
-                            <p>Obtainable all day:</p>
-                            <Checkbox
-                                defaultChecked
-                                toggle
-                                onChange={this.handleAllDayToggle}
+                        <Grid.Column className="filters" width={3}>
+                            <div style={{ marginBottom: '1em' }}>
+                                <span>Obtainable all day:</span>
+                                <Checkbox
+                                    defaultChecked
+                                    toggle
+                                    onChange={this.handleAllDayToggle}
+                                />
+                            </div>
+                            <Divider inverted />
+                            <Input
+                                icon="search"
+                                placeholder="Filter by name ..."
+                                size="small"
+                                loading={false}
                             />
                         </Grid.Column>
-                        <Grid.Column width={14}>
+                        <Grid.Column width={13}>
                             <div id="tablecontainer">
                                 <CritterList allDay={allDay} type="both" />
                             </div>
