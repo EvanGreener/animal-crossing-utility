@@ -91,13 +91,6 @@ with open(os.path.join(current_dir, "bugs-north.csv")) as csv_file:
                 else:
                     end = f'{int(split_str[3]) + 12}:00:00'
 
-            # img_src = ''
-            # if 'unknown' in row["Image"].lower():
-            #     img_src = 'Unknown'
-            #     counter -= 1
-            # else:
-            #     img_src = bug_img_srcs[counter]
-
             price = row["Price"]
             if price == '?':
                 price = 'null'
