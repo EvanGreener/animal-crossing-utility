@@ -8,13 +8,15 @@ This is web application made with React JS and Express JS, for people who want m
 - Gulp is installed globally ('npm install -g gulp'. Your local gulp version, in client/ should be < v4.0)
 
 ## Initial setup
-
-1. Open a terminal/cmd window & navigate to the root of this repository
-2. cd api/
-3. npm install (Install the node modules)
-4. npm start (Start the api server)
-5. Open a new terminal/cmd window in the root of this repo
-6. cd client/
-7. npm install
-8. npm start (Start the client build)
-9. The web page should open automatically
+1. On your local mysql server, crearte a schema called animal_crossing
+2. Then go into api/sql_scrpts and run the ddl and dml scripts (in that order)
+3. Change the api/bin/www.js file and the api/models/db.js file to match the mysql connection configurations of your local server
+4. Open a terminal/cmd window & navigate to the root of this repository
+5. cd api/
+6. npm install (Install the node modules)
+7. npm start (Start the api server)
+8. Open a new terminal/cmd window in the root of this repo
+9. cd client/
+10. npm install
+11. npm start (Start the client build)
+12. The web page should open automatically
