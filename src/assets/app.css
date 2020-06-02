@@ -1,0 +1,97 @@
+html,
+body {
+    background-color: #0d1121;
+    font-size: large;
+    height: 100%;
+    width: 100%;
+}
+
+#root {
+    height: 100%;
+}
+
+.toggle_header {
+    padding: 10px 10px 10px 40px;
+    background-color: #0d1121;
+}
+
+.pushable .sidebar {
+    background-color: #0d1121 !important;
+}
+
+.item {
+    color: aqua !important;
+}
+
+.item.search {
+    padding: 2em 1.5em 1.5em 1.5em !important;
+    font-size: 0.6em;
+}
+
+div.ui.icon.input {
+    /* width: 15em !important;
+    height: 2.5em !important; */
+    text-align: right;
+}
+
+.item:hover {
+    color: rgb(0, 164, 164) !important;
+}
+
+.content {
+    padding: 10px 20px 0px 20px;
+    background-image: url('../assets/bg3.gif') !important;
+    background-size: 100% 100% !important;
+    background-attachment: fixed !important;
+    flex-grow: 1;
+    text-align: center;
+}
+
+#current-time {
+    font-size: 2em;
+}
+
+button.MuiFab-primary {
+    position: fixed;
+    top: 85%;
+    left: 94%;
+    color: aqua !important;
+    background-color: #0d1121 !important;
+}
+
+button.MuiFab-primary:active {
+    outline: none;
+}
+
+h2.ui.header {
+    display: inline;
+}
+
+.MuiBackdrop-root {
+    z-index: 100 !important;
+    color: #0d1121 !important;
+}
+
+#tablecontainer {
+    width: 90%;
+    margin: 0 auto;
+}
+
+.content-grid {
+    margin-top: 1em !important;
+}
+
+.filters {
+    text-align: left;
+    color: aqua;
+    background-color: #0d1121;
+    opacity: 90%;
+    font-size: 0.9em;
+    margin-top: 2.5em;
+    margin-bottom: 1em;
+    border-radius: 20px;
+}
+
+div.ui.toggle.checkbox {
+    display: inline;
+}
